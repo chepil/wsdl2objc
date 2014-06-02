@@ -1,0 +1,12 @@
+
+*.xcuserstate
+
+*.xcworkspacedata
+
+WSDLParser.xcodeproj/xcuserdata/chepil.xcuserdatad/xcschemes/xcschememanagement.plist
+
+WSDLParser.xcodeproj/xcuserdata/chepil.xcuserdatad/xcschemes/WSDLParser.xcscheme
+
+WSDLParser.xcodeproj/xcuserdata/chepil.xcuserdatad/xcschemes/wsdl2objc.xcscheme
+
+WSDLParser.xcodeproj/project.xcworkspace/xcshareddata/WSDLParser.xccheckout
