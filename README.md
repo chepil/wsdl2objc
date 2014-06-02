@@ -114,3 +114,66 @@ Assume the following:
 ### NOTE
 
 If a WSDL has defined a string type that has attributes, then wsdl2objc will map it to a generic NSObject with a property called "content" which will hold the actual string. So if you want to use the string, you have to call object.content. If you want its attributes, they're also properties of the object. The short reason for this is that Cocoa makes it very hard to subclass NSStrings.
+
+
+### NEW Example ( from chepil )
+
+Assume the following:
+
+ * A SOAP service called "Tws"
+ * A SOAP method called Hello that has a request attribute called Name, and a response attribute called Return 
+ 
+```objective-c
+//
+//  ViewController.m
+//  aaaa
+//
+//  Created by Denis Chepil on 31.05.14.
+//  Copyright (c) 2014 Chepil. All rights reserved.
+//
+
+#import "ViewController.h"
+#import "tws.h"
+
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+
+    tws_twsPortBinding *b = [tws twsPortBinding];
+    [b setLogXMLInOut:YES];
+    tws_hello *s = [[tws_hello alloc] init];
+    
+    [s setV_name:@"myexample"];
+    [b helloUsingHello:s];
+    [b helloUsingHello:s
+      success:^(NSArray *headers, NSArray *bodyParts) {
+          //headers
+          for (int i=0; i<[headers count]; i++) {
+              NSLog(@"i: %d, %@", i, [headers objectAtIndex:i]);
+          }
+          //bodyParts
+          for (int i=0; i<[bodyParts count]; i++) {
+              NSLog(@"res: %@",[(tws_helloResponse*)[bodyParts objectAtIndex:i] v_return]);
+          }
+      }
+      error:^(NSError *error) {
+          NSLog(@"error: %@", error.description);
+      }
+    ];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
+```
