@@ -16,12 +16,15 @@
 /* elements */
 %FOREACH element in sequenceElements
 %IF element.isArray
-@property(nonatomic, strong) NSArray *%«element.name»; // Array of *%«element.type.typeName»
+@property(nonatomic, strong) NSArray *v_%«element.name»; // Array of *%«element.type.typeName»
 %ELSE
 %IF element.type.isEnum
-@property (nonatomic) %«element.type.variableTypeName» %«element.name»;
+@property (nonatomic) %«element.type.variableTypeName» v_%«element.name»;
 %ELSE
-@property (nonatomic, strong) %«element.type.variableTypeName» %«element.name»;
+
+
+@property (nonatomic, strong) %«element.type.variableTypeName» v_%«element.name»;
+
 %ENDIF
 %ENDIF
 %ENDFOR

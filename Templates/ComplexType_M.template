@@ -46,12 +46,12 @@
 %ENDIF
 %FOREACH element in sequenceElements
 %IF element.isArray
-    for (%«element.type.variableTypeName» item in _%«element.name»)
+    for (%«element.type.variableTypeName» item in _v_%«element.name»)
         [%«element.type.className» serializeToChildOf:node withName:"%«prefix»:%«element.wsdlName»" value:item];
 
 %ELSE
-    if (_%«element.name»)
-        [%«element.type.className» serializeToChildOf:node withName:"%«prefix»:%«element.wsdlName»" value:_%«element.name»];
+    if (_v_%«element.name»)
+        [%«element.type.className» serializeToChildOf:node withName:"%«element.wsdlName»" value:_v_%«element.name»];
 
 %ENDIF
 %ENDFOR
@@ -61,9 +61,9 @@
 %IFDEF element.type.factoryClassName
 %IFNOT element.isArray
 
-- (%«element.type.variableTypeName»)%«element.name» {
-    if (!_%«element.name») _%«element.name» = [%«element.type.factoryClassName» new];
-    return _%«element.name»;
+- (%«element.type.variableTypeName»)v_%«element.name» {
+    if (!_v_%«element.name») _v_%«element.name» = [%«element.type.factoryClassName» new];
+    return _v_%«element.name»;
 }
 %ENDIF
 %ENDIF
@@ -122,7 +122,7 @@
 %IF hasArrayElements
 %FOREACH element in sequenceElements
 %IF element.isArray
-    NSMutableArray *%«element.name»Values = nil;
+    NSMutableArray *v_%«element.name»Values = nil;
 %ENDIF
 %ENDFOR
 
@@ -134,14 +134,14 @@
         else if (xmlStrEqual(cur->name, (const xmlChar *)"%«element.wsdlName»")) {
 %IF element.isArray
             Class elementClass = classForElement(cur) ?: [%«element.type.className» class];
-            if (!%«element.name»Values) %«element.name»Values = [NSMutableArray new];
-            [%«element.name»Values addObject:[elementClass deserializeNode:cur]];
+            if (!v_%«element.name»Values) v_%«element.name»Values = [NSMutableArray new];
+            [v_%«element.name»Values addObject:[elementClass deserializeNode:cur]];
 %ELSE
 %IF element.type.isEnum
-            self.%«element.name» = [%«element.type.className» deserializeNodeRaw:cur];
+            self.v_%«element.name» = [%«element.type.className» deserializeNodeRaw:cur];
 %ELSE
             Class elementClass = classForElement(cur) ?: [%«element.type.className» class];
-            self.%«element.name» = [elementClass deserializeNode:cur];
+            self.v_%«element.name» = [elementClass deserializeNode:cur];
 %ENDIF
 %ENDIF
         }
@@ -151,7 +151,7 @@
 
 %FOREACH element in sequenceElements
 %IF element.isArray
-    if (%«element.name»Values) self.%«element.name» = %«element.name»Values;
+    if (v_%«element.name»Values) self.v_%«element.name» = v_%«element.name»Values;
 %ENDIF
 %ENDFOR
 %ENDIF
