@@ -151,7 +151,7 @@ Assume the following:
     tws_hello *s = [[tws_hello alloc] init];
     
     [s setV_name:@"myexample"];
-    [b helloUsingHello:s];
+    //[b helloUsingHello:s];
     [b helloUsingHello:s
       success:^(NSArray *headers, NSArray *bodyParts) {
           //headers
